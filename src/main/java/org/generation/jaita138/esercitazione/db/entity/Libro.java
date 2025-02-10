@@ -13,7 +13,7 @@ public class Libro {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String titolo;
-    private String annoPubblicazione;
+    private int annoPubblicazione;
 
     @Column(length = 17)
     private String isbn;
@@ -34,11 +34,11 @@ public class Libro {
         this.titolo = titolo;
     }
 
-    public String getAnnoPubblicazione() {
+    public int getAnnoPubblicazione() {
         return annoPubblicazione;
     }
 
-    public void setAnnoPubblicazione(String annoPubblicazione) {
+    public void setAnnoPubblicazione(int annoPubblicazione) {
         this.annoPubblicazione = annoPubblicazione;
     }
 
