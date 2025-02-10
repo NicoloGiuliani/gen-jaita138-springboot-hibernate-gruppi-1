@@ -33,11 +33,8 @@ public class LibroService {
         return libroRepo.findByAnnoPubblicazioneBetween(annoPubblicazione);
     }
 
-    public List<Libro> findByISBNequals(String isbn) {
+    public List<Libro> findByisbnIs(String isbn) {
 
-        return libroRepo.findByISBNequals(isbn);
+        return libroRepo.findByisbnIs(isbn);
     }
-
-
-
 }

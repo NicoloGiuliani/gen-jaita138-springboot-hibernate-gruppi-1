@@ -1,5 +1,6 @@
 package org.generation.jaita138.esercitazione;
 
+import org.generation.jaita138.esercitazione.CliManager.CliManager;
 import org.generation.jaita138.esercitazione.db.service.AutoreService;
 import org.generation.jaita138.esercitazione.db.service.GenereService;
 import org.generation.jaita138.esercitazione.db.service.LibroService;
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class EsercitazioneApplication implements CommandLineRunner {
+	
 	@Autowired
 	private LibroService libroService;
 
@@ -27,7 +29,4 @@ public class EsercitazioneApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		new CliManager(libroService, genereService, autoreService);
 	}
-
-	
-
 }
