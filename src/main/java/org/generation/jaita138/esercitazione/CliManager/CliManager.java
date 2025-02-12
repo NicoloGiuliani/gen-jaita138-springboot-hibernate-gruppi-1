@@ -7,7 +7,6 @@ import org.generation.jaita138.esercitazione.db.entity.Libro;
 import org.generation.jaita138.esercitazione.db.entity.Autore;
 import org.generation.jaita138.esercitazione.db.entity.Genere;
 import org.generation.jaita138.esercitazione.db.service.LibroService;
-
 import org.generation.jaita138.esercitazione.db.service.AutoreService;
 import org.generation.jaita138.esercitazione.db.service.GenereService;
 
