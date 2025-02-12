@@ -13,12 +13,11 @@ import org.generation.jaita138.esercitazione.db.service.GenereService;
 
 public class CliManager {
     private Scanner sc;
-    
+
     private LibroService libroService;
     private AutoreService autoreService;
     private GenereService genereService;
-    
-    
+
     public CliManager(LibroService libroService, GenereService genereService, AutoreService autoreService) {
         sc = new Scanner(System.in);
         this.libroService = libroService;
@@ -48,7 +47,7 @@ public class CliManager {
         System.out.println("10. Aggiungi nuovo libro con autori e generi");
         System.out.println("Operazioni di ricerca:");
         System.out.println("11. lettura di tutti i libri con titolo che inizia per `p`");
-        System.out.println("12. lettura di tutti i libri prodotti tra il **2000** e il **2020**");
+        System.out.println("12. lettura di tutti i libri prodotti tra il 2000 e il 2020");
         System.out.println("13. ricerca del libro con `ISBN` uguale a 978-3-16-148410-0 ");
         System.out.println("0. Esci");
         printSeparetor();
@@ -107,65 +106,186 @@ public class CliManager {
         }
         printOptions();
     }
-    
+
     private void stampaLibri() {
         List<Libro> libri = libroService.findAll();
         System.out.println("libri:");
         System.out.println(libri);
         printSeparetor();
     }
-    
+
     private void stampaLibriConAutore() {
-        // Implementazione del metodo
+        List<Libro> libri = libroService.findAllAutore();
+        System.out.println("libri con autore:");
+
+        for (Libro libro : libri) {
+            System.out.println(libro);
+            System.out.println(libro.getAutore());
+            printSeparetor();
+        }
+        printSeparetor();
     }
-    
+
     private void stampaLibriConAutoreEGenere() {
-        // Implementazione del metodo
+        List<Libro> libri = libroService.findAllAutoreGenere();
+        System.out.println("libri con autore e genere:");
+
+        for (Libro libro : libri) {
+            System.out.println(libro);
+            System.out.println(libro.getAutore());
+            System.out.println(libro.getGeneri());
+            printSeparetor();
+        }
+        printSeparetor();
     }
-    
+
     private void stampaTuttiGliAutori() {
         List<Autore> autori = autoreService.findAll();
         System.out.println("autori:");
         System.out.println(autori);
         printSeparetor();
     }
-    
+
     private void stampaTuttiIGeneri() {
         List<Genere> generi = genereService.findAll();
         System.out.println("generi:");
         System.out.println(generi);
         printSeparetor();
     }
-    
+
     private void letturaAutoriConLibri() {
-        // Implementazione del metodo
+        List<Autore> autori = autoreService.findAllAutoreLibri();
+        System.out.println("autori con libri:");
+
+        for (Autore autore : autori) {
+            System.out.println(autore);
+            System.out.println(autore.getLibri());
+            printSeparetor();
+        }
+        printSeparetor();
     }
-    
+
     private void letturaGeneriConLibri() {
-        // Implementazione del metodo
+        List<Genere> generi = genereService.findAllGenereLibri();
+        System.out.println("generi con libri:");
+
+        for (Genere genere : generi) {
+            System.out.println(genere);
+            System.out.println(genere.getLibri());
+            printSeparetor();
+        }
+        printSeparetor();
     }
-    
+
     private void aggiungiNuovoAutore() {
-        // Implementazione del metodo
+        Autore autore = new Autore();
+
+        System.out.println("Inserisci il nome dell'autore:");
+        autore.setNome(sc.nextLine());
+        printSeparetor();
+
+        System.out.println("Inserisci il cognome dell'autore:");
+        autore.setCognome(sc.nextLine());
+        printSeparetor();
+
+        System.out.println("Inserisci la nazionalità dell'autore:");
+        autore.setNazionalità(sc.nextLine());
+
+        autoreService.save(autore);
+        printSeparetor();
     }
-    
+
     private void aggiungiNuovoGenere() {
-        // Implementazione del metodo
+        Genere genere = new Genere();
+
+        System.out.println("Inserisci il nome del genere:");
+        genere.setNome(sc.nextLine());
+
+        genereService.save(genere);
+        printSeparetor();
     }
-    
+
     private void aggiungiNuovoLibro() {
-        // Implementazione del metodo
+        Libro libro = new Libro();
+
+        System.out.println("Inserisci il titolo del libro:");
+        libro.setTitolo(sc.nextLine());
+        printSeparetor();
+
+        System.out.println("Inserisci l'anno di pubblicazione del libro:");
+        libro.setAnnoPubblicazione(Integer.parseInt(sc.nextLine()));
+        printSeparetor();
+
+        System.out.println("Inserisci l'ISBN del libro:");
+        libro.setIsbn(sc.nextLine());
+        printSeparetor();
+
+        for (Autore autore : autoreService.findAll()) {
+            System.out.println(autore);
+            printSeparetor();
+        }
+        System.out.println("Inserisci l'id dell'autore del libro:");
+        Autore autore = autoreService.findById(Long.parseLong(sc.nextLine()));
+        if (autore == null) {
+            System.out.println("Autore non trovato");
+            return;
+        }
+        libro.setAutore(autore);
+
+        printSeparetor();
+
+        boolean condition = true;
+        do {
+
+            List<Integer> generiId = libro.getGeneri().stream()
+                    .map(genere -> genere.getId().intValue())
+                    .toList();
+
+            genereService.findAll().stream()
+                    .filter(genere -> !generiId.contains(genere.getId().intValue()))
+                    .forEach(t -> {
+                        System.out.println(t);
+                        printSeparetor();
+                    });
+
+            System.out.println("Inserisci l'id del genere del libro:");
+            Genere genere = genereService.findById(Long.parseLong(sc.nextLine()));
+            if (genere == null) {
+                System.out.println("Genere non trovato");
+                return;
+            }
+            printSeparetor();
+            libro.getGeneri().add(genere);
+
+            System.out.println("Vuoi aggiungere un altro genere? (s/n)");
+            String value = sc.nextLine();
+            printSeparetor();
+            if (value.equals("n")) {
+                condition = false;
+            }
+        } while (condition);
+        printSeparetor();
+        libroService.save(libro);
     }
-    
+
     private void letturaLibriConTitoloP() {
-        // Implementazione del metodo
+        System.out.println("libri con titolo che inizia per `p`:");
+        List<Libro> libri = libroService.findByTitleStartingWith("p");
+        System.out.println(libri);
+        printSeparetor();
     }
-    
+
     private void letturaLibriProdottiTra2000E2020() {
-        // Implementazione del metodo
+        System.out.println("libri prodotti tra il 2000 e il 2020:");
+        List<Libro> libri = libroService.findByAnnoPubblicazioneBetween(2000, 2020);
+        System.out.println(libri);
+        printSeparetor();
     }
-    
+
     private void ricercaLibroConISBN() {
-        // Implementazione del metodo
+        System.out.println("libro con `ISBN` uguale a 978-3-16-148410-0:");
+        List<Libro> libri = libroService.findByisbnIs("978-3-16-148410-0");
+        System.out.println(libri);
+        printSeparetor();
     }
 }

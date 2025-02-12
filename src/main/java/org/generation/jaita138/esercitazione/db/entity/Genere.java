@@ -1,19 +1,24 @@
 package org.generation.jaita138.esercitazione.db.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 
 @Entity
 public class Genere {
 
-
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nome;
+
+    @ManyToMany(mappedBy = "generi")
+    private List<Libro> libri;
 
     public Long getId() {
         return id;
@@ -31,11 +36,20 @@ public class Genere {
         this.nome = nome;
     }
 
-    @Override
-    public String toString() {
-        return "Genere [\nid=" + id + ", \nnome=" + nome + "]";
+    public List<Libro> getLibri() {
+        return libri;
     }
 
-    
+    public void setLibri(List<Libro> libri) {
+        this.libri = libri;
+    }
+
+    @Override
+    public String toString() {
+        return "\nGenere:"
+                + "\n[id= " + id
+                + "\nnome= " + nome + "]"
+                + "\n";
+    }
 
 }

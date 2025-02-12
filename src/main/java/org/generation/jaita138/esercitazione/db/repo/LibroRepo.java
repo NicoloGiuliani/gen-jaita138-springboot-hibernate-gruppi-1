@@ -7,8 +7,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LibroRepo extends JpaRepository<Libro, Long> {
-    List<Libro> findByTitleStartingWith(String titolo);
-    List<Libro> findByAnnoPubblicazioneBetween(int annoPubblicazione);
+    
+    List<Libro> findByTitoloStartingWith(String titolo);
+    List<Libro> findByAnnoPubblicazioneBetween(int annoPubblicazioneMinimo, int annoPubblicazioneMassimo);
     List<Libro> findByisbnIs(String isbn);
 
 }
