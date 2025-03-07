@@ -2,6 +2,8 @@ package org.generation.jaita138.esercitazione.db.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +19,7 @@ public class Genere {
 
     private String nome;
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "generi")
     private List<Libro> libri;
 
